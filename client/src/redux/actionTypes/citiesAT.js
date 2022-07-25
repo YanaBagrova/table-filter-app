@@ -1,0 +1,4 @@
+export const citiesAT = {
+  INIT_CITIES: 'INIT_CITIES',
+  GET_CITIES_FETCH: 'GET_CITIES_FETCH',
+}
