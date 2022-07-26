@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Table from '../Table/Table'
 import './App.css'
 import SearchIcon from '@mui/icons-material/Search'
+import { errorInitAC } from '../../redux/actionCreators/errorAC'
 
 function App() {
   const pages = [1, 2, 3, 4, 5]
@@ -45,6 +46,7 @@ function App() {
 
   const cities = useSelector((state) => state.citiesReducer.cities)
   const currentPage = useSelector((state) => state.currentPageReducer.currentPage)
+  const error = useSelector((state) => state.errorReducer.error)
 
   useEffect(() => {
     dispatch(setCurrentPageAC(1))
@@ -93,10 +95,6 @@ function App() {
     dispatch(setCurrentPageAC(1))
   }
 
-  // function createMarkup() {
-  //   return {__html: 'First &middot; Second'};
-  // }
-
   return (
     <div className="App">
       <ul className="menu">
@@ -133,6 +131,7 @@ function App() {
         })
         }
       </ul>
+      {error && (<div className="error-field"><p>Ой! Произошла ошибка</p><p>{error}</p></div>)}
       {form && <form type="submit" onSubmit={handleSubmit}>
         <input type="text" value={name} name="form_name" className="black" onChange={handleChange} />
         <button><SearchIcon sx={{ height: '20px' }}></SearchIcon></button>
@@ -142,10 +141,10 @@ function App() {
       {pages?.map((el) => <span key={uuidv4()}
         className={currentPage === el ? "current-page" : "page"}
         onClick={() => {
-          console.log(el, 'Knopka nazhata')
           dispatch(setCurrentPageAC(el))
         }}
       >{el}</span>)}
+      {error && <div className="hidden">{setTimeout(() => { dispatch(errorInitAC('')) }, 2500)}</div>}
     </div>
   );
 }

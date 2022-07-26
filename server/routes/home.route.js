@@ -1,31 +1,44 @@
 const router = require('express').Router();
+const { response } = require('express');
 const { City } = require('../db/models');
 
 router.route('/')
   .post(async (req, res) => {
+    try {
     const { currentPage, perPage, filter1 } = req.body
     let result
     let cities
-
-    if (filter1 && Array.isArray(filter1)) {
-      if (filter1[0] === 'на русском' || filter1[0] === 'на английском' || filter1[0] === 'все') {
-        result = await City.findOne({ where: { name: filter1[1] } })
-      } else if (filter1[0] === 'жителей') {
-        result = await City.findOne({ where: { peopleAmmount: filter1[1] } })
-      } else if (filter1[0] === 'площадь') {
-        result = await City.findOne({ where: { square: filter1[1] } })
-      } else if (filter1[0] === 'солнечных дней в году') {
-        result = await City.findOne({ where: { sunnyDays: filter1[1] } })
-      } else if (filter1[0] === 'от Москвы') {
-        result = await City.findOne({ where: { distanceFromMoscow: filter1[1] } })
-      } else if (filter1[0] === 'от Экватора') {
-        result = await City.findOne({ where: { distanceFromEquator: filter1[1] } })
-      } else if (filter1[0] === 'с севера на юг') {
-        result = await City.findOne({ where: { distanceFromNorthToSouth: filter1[1] } })
-      } 
-    } else {
-      result = await City.findAll()
-    }
+    // const filterArr = [
+    //   {title: 'на русском', dbParam: 'name'},
+    //   {title: 'на английском', dbParam: 'name'},
+    //   {title: 'все', dbParam: 'name'},
+    //   {title: 'жителей', dbParam: 'peopleAmmount'},
+    //   {title: 'площадь', dbParam: 'square'},
+    //   {title: 'солнечных дней в году', dbParam: 'sunnyDays'},
+    //   {title: 'от Москвы', dbParam: 'distanceFromMoscow'},
+    //   {title: 'от Экватора', dbParam: 'distanceFromEquator'},
+    //   {title: 'с севевра на юг', dbParam: 'distanceFromNorthToSouth'},
+    // ]
+    // try {
+      if (filter1 && Array.isArray(filter1)) {
+        if (filter1[0] === 'на русском' || filter1[0] === 'на английском' || filter1[0] === 'все') {
+          result = await City.findOne({ where: { name: filter1[1] } })
+        } else if (filter1[0] === 'жителей') {
+          result = await City.findOne({ where: { peopleAmmount: filter1[1] } })
+        } else if (filter1[0] === 'площадь') {
+          result = await City.findOne({ where: { square: filter1[1] } })
+        } else if (filter1[0] === 'солнечных дней в году') {
+          result = await City.findOne({ where: { sunnyDays: filter1[1] } })
+        } else if (filter1[0] === 'от Москвы') {
+          result = await City.findOne({ where: { distanceFromMoscow: filter1[1] } })
+        } else if (filter1[0] === 'от Экватора') {
+          result = await City.findOne({ where: { distanceFromEquator: filter1[1] } })
+        } else if (filter1[0] === 'с севера на юг') {
+          result = await City.findOne({ where: { distanceFromNorthToSouth: filter1[1] } })
+        }
+      } else {
+        result = await City.findAll()
+      }
 
     let start
     if (currentPage === 1) {
@@ -122,7 +135,10 @@ router.route('/')
     if (Array.isArray(finalResult)) {
       cities = finalResult.slice(start, end)
     }
-    res.json(cities);
+    return res.json(cities);
+    } catch (error) {
+      return res.json()
+    }
   });
 
 module.exports = router;
