@@ -1,0 +1,12 @@
+.error-field {
+  display: flex;
+  margin-left: 5%;
+  font-size: 25px;
+  color: red;
+  border: 2px solid red;
+  width: 900px;
+  min-height: 60px;
+  padding-top: 10px;
+  text-indent: 15px;
+  border-radius: 5px;
+}

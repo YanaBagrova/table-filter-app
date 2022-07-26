@@ -1,0 +1,61 @@
+.menu {
+  display: flex;
+}
+
+.menu li {
+  width: 250px;
+  list-style: none;
+  background: #383c54;
+  position: relative;
+}
+
+.menu li {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  padding: 0 10px;
+  height: 40px;
+  line-height: 40px;
+  transition: all .5s;
+}
+
+.menu li:hover {
+  background: #808291;
+}
+
+.menu ul {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  display: none;
+  padding: 0;
+}
+
+.menu li:hover>ul {
+  display: block;
+}
+
+.menu ul ul {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
+
+.menu ul ul form {
+  display: none;
+  position: absolute;
+  height: 33%;
+  left: 100%;
+  color: black;
+}
+
+.form-parent:hover form {
+  display: flex;
+}
+
+.menu form:hover {
+  display: flex;
+  color: black;
+}

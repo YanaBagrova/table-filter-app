@@ -23,7 +23,6 @@ const fetchCities = async ({ currentPage, filter1 }) => {
       return response
     }
   } catch (error) {
-    console.log(error, error.status, typeof error)
     return error
   }
 }
@@ -31,7 +30,7 @@ const fetchCities = async ({ currentPage, filter1 }) => {
 function* getCitiesFetch(action) {
   try {
     const cities = yield call(fetchCities, { currentPage: action.payload.currentPage, filter1: action.payload.filter1 })
-    if (cities.status && cities.status !== 200 && typeof cities === 'object') {
+    if ((cities.status && cities.status !== 200) || (typeof cities === 'object' && !Array.isArray(cities))) {
       let error = cities
         yield put(errorInitAC(error))
     } else {
