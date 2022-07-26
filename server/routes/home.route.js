@@ -8,18 +8,7 @@ router.route('/')
     const { currentPage, perPage, filter1 } = req.body
     let result
     let cities
-    // const filterArr = [
-    //   {title: 'на русском', dbParam: 'name'},
-    //   {title: 'на английском', dbParam: 'name'},
-    //   {title: 'все', dbParam: 'name'},
-    //   {title: 'жителей', dbParam: 'peopleAmmount'},
-    //   {title: 'площадь', dbParam: 'square'},
-    //   {title: 'солнечных дней в году', dbParam: 'sunnyDays'},
-    //   {title: 'от Москвы', dbParam: 'distanceFromMoscow'},
-    //   {title: 'от Экватора', dbParam: 'distanceFromEquator'},
-    //   {title: 'с севевра на юг', dbParam: 'distanceFromNorthToSouth'},
-    // ]
-    // try {
+    
       if (filter1 && Array.isArray(filter1)) {
         if (filter1[0] === 'на русском' || filter1[0] === 'на английском' || filter1[0] === 'все') {
           result = await City.findOne({ where: { name: filter1[1] } })
