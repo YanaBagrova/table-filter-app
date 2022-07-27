@@ -2,12 +2,13 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { setCurrentPageAC } from '../../redux/actionCreators/currentPageAC'
+import { setFilterAC } from '../../redux/actionCreators/filterAC'
 import LiComponent from '../LiComponent/LiComponent'
 import UlComponent from '../UlComponent/UlComponent'
 import './Menu.css'
 
 
-function Menu({ handleMouseOver, setFilter }) {
+function Menu({ handleMouseOver }) {
   const menu = [
     {
       name: 'Дата (основания)',
@@ -36,15 +37,14 @@ function Menu({ handleMouseOver, setFilter }) {
   ]
 
   const dispatch = useDispatch()
-  const formClassName = "form-parent"
 
   function handleClick(event) {
     event.preventDefault()
     const filter1 = event.target.innerText
     if (filter1.includes('\n')) {
-      setFilter(filter1.split('\n')[0])
+      dispatch(setFilterAC(filter1.split('\n')[0]))
     } else {
-      setFilter(filter1)
+      dispatch(setFilterAC(filter1))
     }
     dispatch(setCurrentPageAC(1))
   }
@@ -54,12 +54,12 @@ function Menu({ handleMouseOver, setFilter }) {
       {menu.map((el) => {
         let resultEl
         if (!el.filters) {
-          resultEl = (<LiComponent key={uuidv4()} id={0} el={el} />) //zabila zakommentitj predidyshij variant bex componenta
+          resultEl = (<LiComponent key={uuidv4()} id={9876} el={el} />)
         } else {
           resultEl = (<li key={uuidv4()}>{el.name}
             <ul>
               {el.filters.map((el2) => (<li key={uuidv4()} onClick={handleClick}>{el2.name}
-               <UlComponent el={el2} handleMouseOver={handleMouseOver} handleClick={handleClick} formClassName={formClassName}/>
+                <UlComponent el={el2} handleClick={handleClick} />
               </li>))}
             </ul>
           </li>

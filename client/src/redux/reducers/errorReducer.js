@@ -13,7 +13,7 @@ export const errorReducer = (state = errorInitialState, action) => {
         error = 'Ошибка произошла на сервере'
       } else if (action.payload.status === 503) {
         error = 'Сервис временно недоступен. Попробуйте позже'
-      } else if (action.payload.status >= 500 ) {
+      } else if (action.payload.status >= 500) {
         error = 'Ошибка сервера'
       } else if (action.payload.status >= 400 && action.payload.status < 500) {
         error = 'Ошибка соединения с сервером'
@@ -26,7 +26,7 @@ export const errorReducer = (state = errorInitialState, action) => {
       return {
         ...state, error: error
       }
-    
+
     default:
       return state
   }

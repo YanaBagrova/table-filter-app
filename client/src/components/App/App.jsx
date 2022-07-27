@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCitiesFetchAC } from '../../redux/actionCreators/citiesAC'
 import { setCurrentPageAC } from '../../redux/actionCreators/currentPageAC'
 import { v4 as uuidv4 } from 'uuid'
 import Table from '../Table/Table'
 import { errorInitAC } from '../../redux/actionCreators/errorAC'
+import { setFormAC } from '../../redux/actionCreators/formAC'
+import { setMessageAC } from '../../redux/actionCreators/messageAC'
 import Menu from '../Menu/Menu'
 import FormComponent from '../FormComponent/FormComponent'
 import ErrorComponent from '../ErrorComponent/ErrorComponent'
@@ -13,17 +15,15 @@ import './App.css'
 
 function App() {
   const pages = [1, 2, 3, 4, 5]
-  const [form, setForm] = useState(false)
-  const [name, setName] = useState('')
-  const [filter1, setFilter1] = useState('')
-  const [message, setMessage] = useState(false)
-  const [searchFilter, setSearchFilter] = useState('')
 
   const dispatch = useDispatch()
 
   const cities = useSelector((state) => state.citiesReducer.cities)
   const error = useSelector((state) => state.errorReducer.error)
   const currentPage = useSelector((state) => state.currentPageReducer.currentPage)
+  const filter1 = useSelector((state) => state.filterReducer.filter)
+  const form = useSelector((state) => state.formReducer.form)
+  const message = useSelector((state) => state.messageReducer.message)
 
   useEffect(() => {
     dispatch(setCurrentPageAC(1))
@@ -34,38 +34,15 @@ function App() {
   }, [filter1, currentPage, dispatch])
 
   useEffect(() => {
-    // if (form) { - если добавить условие, реакт просит поместить form в массив зависимостей, но это не работает
-    setForm(false)
-    setMessage(false)
-    // }
-  }, [cities])
-
-  function handleChange({ target: { value } }) {
-    setName(value)
-  }
-
-  function handleMouseOver(event) {
-    setSearchFilter(event.target.parentNode.parentElement.innerHTML.split('<')[0])
-    setForm(true)
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault()
-    const filter1 = [searchFilter, name]
-    if (name) {
-      setFilter1(filter1)
-      dispatch(setCurrentPageAC(1))
-      setName('')
-    } else {
-      setMessage(true)
-    }
-  }
+    dispatch(setFormAC(false))
+    dispatch(setMessageAC(false))
+  }, [cities, dispatch])
 
   return (
     <div className="App">
-      <Menu handleMouseOver={handleMouseOver} setFilter={setFilter1}/>
-      {error && <ErrorComponent error={error} />}
-      {form && <FormComponent handleSubmit={handleSubmit} handleChange={handleChange} value={name} />}
+      <Menu />
+      {error && <ErrorComponent />}
+      {form && <FormComponent />}
       {message && <div className="validation">Введите параметр для поиска</div>}
       <Table cities={cities} />
       {pages?.map((page) => <Pagination key={uuidv4()} page={page} />)}
