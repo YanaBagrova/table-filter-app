@@ -2,6 +2,8 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { setCurrentPageAC } from '../../redux/actionCreators/currentPageAC'
+import LiComponent from '../LiComponent/LiComponent'
+import UlComponent from '../UlComponent/UlComponent'
 import './Menu.css'
 
 
@@ -34,6 +36,7 @@ function Menu({ handleMouseOver, setFilter }) {
   ]
 
   const dispatch = useDispatch()
+  const formClassName = "form-parent"
 
   function handleClick(event) {
     event.preventDefault()
@@ -51,27 +54,12 @@ function Menu({ handleMouseOver, setFilter }) {
       {menu.map((el) => {
         let resultEl
         if (!el.filters) {
-          resultEl = (<li key={uuidv4()}>{el.name}</li>)
+          resultEl = (<LiComponent key={uuidv4()} id={0} el={el} />) //zabila zakommentitj predidyshij variant bex componenta
         } else {
           resultEl = (<li key={uuidv4()}>{el.name}
             <ul>
               {el.filters.map((el2) => (<li key={uuidv4()} onClick={handleClick}>{el2.name}
-                <ul>
-                  {el2.filters2.map((el2, index) => {
-                    let result
-                    if (index === 2) {
-                      result = <li
-                        key={uuidv4()}
-                        onMouseMove={handleMouseOver}
-                        className="form-parent"
-                      >{el2}</li>
-                    } else {
-                      result = <li key={uuidv4()} onClick={handleClick}>{el2}</li>
-                    }
-                    return result
-                  }
-                  )}
-                </ul>
+               <UlComponent el={el2} handleMouseOver={handleMouseOver} handleClick={handleClick} formClassName={formClassName}/>
               </li>))}
             </ul>
           </li>
